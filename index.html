@@ -6,212 +6,312 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Wallet">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Wallet Optimizer</title>
 <style>
-:root {
-  --bg: #111318; --surface: #1a1d24; --border: #2a2e38; --text: #e8e9ed;
-  --muted: #8b8f9a; --accent: #c9a84c; --accent-dim: rgba(201,168,76,0.15);
-  --green: #34d399; --green-bg: rgba(52,211,153,0.12); --red: #f87171;
-  --red-bg: rgba(248,113,113,0.1); --cur-bg: rgba(201,168,76,0.1);
-}
-* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-body { font-family:-apple-system,'Inter',system-ui,sans-serif; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; }
-.hdr { background:linear-gradient(135deg,#16181f,#1e2230); padding:48px 20px 14px; }
-.hdr h1 { font-size:22px; font-weight:700; color:var(--accent); letter-spacing:-0.3px; }
-.hdr p { font-size:12px; color:var(--muted); margin-top:4px; }
-.tabs { display:flex; border-bottom:1px solid var(--border); background:var(--surface); position:sticky; top:0; z-index:100; overflow-x:auto; }
-.tab { flex:1; padding:12px 6px; border:none; background:none; cursor:pointer; font-size:11px; font-weight:500; color:var(--muted); border-bottom:2px solid transparent; white-space:nowrap; font-family:inherit; }
-.tab.on { font-weight:700; color:var(--accent); border-bottom-color:var(--accent); }
-.ct { padding:16px; }
-.hint { font-size:11px; color:var(--muted); margin-bottom:12px; }
-.search { width:100%; padding:10px 14px; border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--text); font-size:14px; margin-bottom:12px; outline:none; font-family:inherit; }
-.search:focus { border-color:var(--accent); }
-.card { background:var(--surface); border-radius:10px; padding:12px 14px; margin-bottom:6px; border:1px solid var(--border); }
-.card.tap { cursor:pointer; }
-.row-top { display:flex; justify-content:space-between; align-items:center; }
-.title { font-size:14px; font-weight:600; }
-.meta { display:flex; align-items:center; gap:6px; margin-top:4px; }
-.badge { color:#fff; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; display:inline-block; }
-.rate { font-size:13px; font-weight:700; color:var(--accent); }
-.chev { font-size:16px; color:var(--muted); transition:transform 0.2s; }
-.chev.open { transform:rotate(180deg); }
-.detail { margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
-.detail-notes { font-size:12px; color:var(--muted); line-height:1.5; margin-bottom:8px; }
-.alts-lbl { font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
-.alts { display:flex; flex-wrap:wrap; gap:5px; }
-.alt { background:#2a2e38; padding:3px 8px; border-radius:4px; font-size:11px; color:var(--muted); }
-.card-hdr { display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:8px; margin-bottom:6px; color:#fff; }
-.card-hdr-name { font-size:14px; font-weight:700; }
-.card-hdr-info { font-size:11px; opacity:0.6; margin-left:auto; }
-.cr-name { font-size:13px; font-weight:600; }
-.cr-info { font-size:11px; color:var(--muted); margin-top:1px; }
-.mgrid { display:flex; flex-wrap:wrap; gap:4px; margin-top:8px; }
-.mbtn { width:38px; height:30px; border-radius:5px; font-size:10px; font-weight:600; cursor:pointer; font-family:inherit; border:1px solid var(--border); background:var(--surface); color:var(--muted); }
-.mbtn.used { border-color:var(--green); background:var(--green-bg); color:var(--green); }
-.mbtn.cur { border-color:var(--accent); background:var(--cur-bg); color:var(--accent); }
-.mbtn.miss { background:var(--red-bg); border-color:rgba(248,113,113,0.3); color:var(--red); }
-.hgrid { display:flex; gap:6px; margin-top:8px; }
-.hbtn { flex:1; padding:6px 8px; border-radius:6px; border:1px solid var(--border); background:var(--surface); color:var(--muted); font-size:11px; font-weight:600; cursor:pointer; font-family:inherit; }
-.hbtn.used { border-color:var(--green); background:var(--green-bg); color:var(--green); }
-.abtn { margin-top:8px; padding:6px 14px; border-radius:6px; border:1px solid var(--border); background:var(--surface); color:var(--muted); font-size:11px; font-weight:600; cursor:pointer; font-family:inherit; }
-.abtn.used { border-color:var(--green); background:var(--green-bg); color:var(--green); }
-.cr-notes { font-size:11px; color:#555; margin-top:6px; line-height:1.4; }
-.ben-hdr { padding:8px 12px; border-radius:8px 8px 0 0; color:#fff; font-size:14px; font-weight:700; }
-.ben-hdr span { font-size:11px; opacity:0.6; margin-left:8px; }
-.ben-list { background:var(--surface); border-radius:0 0 8px 8px; padding:10px 12px; border:1px solid var(--border); border-top:none; margin-bottom:12px; }
-.ben-item { font-size:12px; line-height:1.7; color:var(--muted); padding:2px 0; border-bottom:1px solid var(--border); }
-.ben-item:last-child { border-bottom:none; }
-.pur-top { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
-.pur-sc { font-size:14px; font-weight:600; }
-.pur-why { font-size:12px; color:var(--muted); line-height:1.5; }
-.v-hero { background:linear-gradient(135deg,var(--surface),#1e222c); border-radius:14px; padding:20px; margin-bottom:16px; border:1px solid var(--border); }
-.v-label { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
-.v-big { font-size:36px; font-weight:800; letter-spacing:-1px; }
-.v-cols { display:flex; gap:16px; margin-top:12px; }
-.v-col-lbl { font-size:10px; color:var(--muted); text-transform:uppercase; }
-.v-col-val { font-size:18px; font-weight:700; }
-.v-card { background:var(--surface); border-radius:12px; padding:14px 16px; margin-bottom:10px; border:1px solid var(--border); }
-.v-card-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
-.v-card-name { font-size:14px; font-weight:600; }
-.v-card-sub { font-size:11px; color:var(--muted); }
-.v-card-net { font-size:16px; font-weight:700; text-align:right; }
-.v-card-net-lbl { font-size:10px; color:var(--muted); text-align:right; }
-.pbar { background:#2a2e38; border-radius:6px; height:6px; overflow:hidden; margin-bottom:6px; }
-.pbar-fill { height:100%; border-radius:6px; transition:width 0.3s; }
-.pbar-info { display:flex; justify-content:space-between; font-size:11px; color:var(--muted); }
-.nf-lbl { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px; margin-top:8px; }
-.nf-row { background:var(--surface); border-radius:10px; padding:10px 14px; margin-bottom:6px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; font-size:13px; }
-.reset { display:block; margin:16px auto 0; padding:8px 20px; border-radius:8px; border:1px solid var(--red); background:none; color:var(--red); font-size:12px; font-weight:600; cursor:pointer; font-family:inherit; }
-.footer { padding:12px 16px 32px; text-align:center; font-size:10px; color:#444; }
+:root{--bg:#111318;--sf:#1a1d24;--bd:#2a2e38;--tx:#e8e9ed;--mt:#8b8f9a;--ac:#c9a84c;
+--gn:#34d399;--gnb:rgba(52,211,153,0.12);--rd:#f87171;--rdb:rgba(248,113,113,0.1);--cb:rgba(201,168,76,0.1)}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,'Inter',system-ui,sans-serif;background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased}
+.hdr{background:linear-gradient(135deg,#16181f,#1e2230);padding:48px 20px 14px}
+.hdr h1{font-size:22px;font-weight:700;color:var(--ac);letter-spacing:-0.3px}
+.hdr p{font-size:12px;color:var(--mt);margin-top:4px}
+.tabs{display:flex;border-bottom:1px solid var(--bd);background:var(--sf);position:sticky;top:0;z-index:100;overflow-x:auto}
+.tab{flex:1;padding:12px 6px;border:none;background:none;cursor:pointer;font-size:11px;font-weight:500;color:var(--mt);border-bottom:2px solid transparent;white-space:nowrap;font-family:inherit}
+.tab.on{font-weight:700;color:var(--ac);border-bottom-color:var(--ac)}
+.ct{padding:16px;padding-bottom:80px}
+.hint{font-size:11px;color:var(--mt);margin-bottom:12px}
+.search{width:100%;padding:10px 14px;border-radius:8px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);font-size:14px;margin-bottom:12px;outline:none;font-family:inherit}
+.search:focus{border-color:var(--ac)}
+.cd{background:var(--sf);border-radius:10px;padding:12px 14px;margin-bottom:6px;border:1px solid var(--bd)}
+.cd.tap{cursor:pointer}
+.row-top{display:flex;justify-content:space-between;align-items:center}
+.ttl{font-size:14px;font-weight:600}
+.meta{display:flex;align-items:center;gap:6px;margin-top:4px}
+.badge{color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;display:inline-block}
+.rate{font-size:13px;font-weight:700;color:var(--ac)}
+.chev{font-size:16px;color:var(--mt);transition:transform 0.2s}
+.chev.open{transform:rotate(180deg)}
+.detail{margin-top:10px;padding-top:10px;border-top:1px solid var(--bd)}
+.dnotes{font-size:12px;color:var(--mt);line-height:1.5;margin-bottom:8px}
+.albl{font-size:10px;font-weight:600;color:var(--mt);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.alts{display:flex;flex-wrap:wrap;gap:5px}
+.alt{background:#2a2e38;padding:3px 8px;border-radius:4px;font-size:11px;color:var(--mt)}
+.chdr{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;margin-bottom:6px;color:#fff}
+.chdr-n{font-size:14px;font-weight:700}
+.chdr-i{font-size:11px;opacity:0.6;margin-left:auto;white-space:nowrap}
+.crn{font-size:13px;font-weight:600}
+.cri{font-size:11px;color:var(--mt);margin-top:1px}
+.mgrid{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.mb{width:38px;height:30px;border-radius:5px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;border:1px solid var(--bd);background:var(--sf);color:var(--mt)}
+.mb.used{border-color:var(--gn);background:var(--gnb);color:var(--gn)}
+.mb.cur{border-color:var(--ac);background:var(--cb);color:var(--ac)}
+.mb.miss{background:var(--rdb);border-color:rgba(248,113,113,0.3);color:var(--rd)}
+.ab{margin-top:8px;padding:6px 14px;border-radius:6px;border:1px solid var(--bd);background:var(--sf);color:var(--mt);font-size:11px;font-weight:600;cursor:pointer;font-family:inherit}
+.ab.used{border-color:var(--gn);background:var(--gnb);color:var(--gn)}
+.crnt{font-size:11px;color:#555;margin-top:6px;line-height:1.4}
+.bhdr{padding:8px 12px;border-radius:8px 8px 0 0;color:#fff;font-size:14px;font-weight:700}
+.bhdr span{font-size:11px;opacity:0.6;margin-left:8px}
+.blst{background:var(--sf);border-radius:0 0 8px 8px;padding:6px 0;border:1px solid var(--bd);border-top:none;margin-bottom:12px}
+.bi{padding:6px 12px;cursor:pointer}
+.bi-top{display:flex;justify-content:space-between;align-items:center}
+.bi-name{font-size:12px;color:var(--mt);line-height:1.5}
+.bi-chev{font-size:12px;color:#444;transition:transform 0.2s}
+.bi-chev.open{transform:rotate(180deg)}
+.bi-desc{font-size:11px;color:#666;line-height:1.5;margin-top:4px;padding:6px 8px;background:rgba(255,255,255,0.03);border-radius:6px}
+.bi+.bi{border-top:1px solid var(--bd)}
+.ptop{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.psc{font-size:14px;font-weight:600}
+.pw{font-size:12px;color:var(--mt);line-height:1.5}
+.vhero{background:linear-gradient(135deg,var(--sf),#1e222c);border-radius:14px;padding:20px;margin-bottom:16px;border:1px solid var(--bd)}
+.vlbl{font-size:11px;color:var(--mt);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.vbig{font-size:36px;font-weight:800;letter-spacing:-1px}
+.vcols{display:flex;gap:16px;margin-top:12px}
+.vcl{font-size:10px;color:var(--mt);text-transform:uppercase}
+.vcv{font-size:18px;font-weight:700}
+.vcd{background:var(--sf);border-radius:12px;padding:14px 16px;margin-bottom:10px;border:1px solid var(--bd)}
+.vct{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.vcn{font-size:14px;font-weight:600}
+.vcs{font-size:11px;color:var(--mt)}
+.vcnet{font-size:16px;font-weight:700;text-align:right}
+.vcnl{font-size:10px;color:var(--mt);text-align:right}
+.pb{background:#2a2e38;border-radius:6px;height:6px;overflow:hidden;margin-bottom:6px}
+.pbf{height:100%;border-radius:6px;transition:width 0.3s}
+.pbi{display:flex;justify-content:space-between;font-size:11px;color:var(--mt)}
+.nfl{font-size:11px;color:var(--mt);text-transform:uppercase;letter-spacing:0.5px;margin:8px 0}
+.nfr{background:var(--sf);border-radius:10px;padding:10px 14px;margin-bottom:6px;border:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.xbtn{display:flex;gap:8px;margin-top:16px;justify-content:center;flex-wrap:wrap}
+.xb{padding:8px 16px;border-radius:8px;border:1px solid var(--bd);background:var(--sf);color:var(--mt);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.xb.danger{border-color:var(--rd);color:var(--rd)}
+.footer{padding:12px 16px 32px;text-align:center;font-size:10px;color:#444}
+.modal-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal{background:var(--sf);border-radius:14px;padding:20px;width:100%;max-width:340px;border:1px solid var(--bd)}
+.modal h3{font-size:16px;font-weight:700;margin-bottom:12px}
+.modal textarea{width:100%;height:120px;background:var(--bg);border:1px solid var(--bd);border-radius:8px;color:var(--tx);font-size:12px;font-family:monospace;padding:10px;resize:none;outline:none}
+.modal-btns{display:flex;gap:8px;margin-top:12px}
+.modal-btns button{flex:1;padding:10px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.mbtn-cancel{background:#2a2e38;color:var(--mt)}
+.mbtn-ok{background:var(--ac);color:#111}
 </style>
 </head>
 <body>
-
-<div class="hdr">
-  <h1>Wallet Optimizer</h1>
-  <p id="hdr-sub"></p>
-</div>
+<div class="hdr"><h1>Wallet Optimizer</h1><p id="hsub"></p></div>
 <div class="tabs" id="tabs"></div>
 <div class="ct" id="ct"></div>
 <div class="footer">Data sourced June 2026. CSP reflects June 15 refresh. Verify terms with issuers.</div>
+<div id="modal"></div>
 
 <script>
-const C = {
-  CSR:{name:"Chase Sapphire Reserve",short:"CSR",color:"#4a7c9e",fee:795,rmo:5,accent:"#5ba3cf"},
-  CSP:{name:"Chase Sapphire Preferred",short:"CSP",color:"#3d6b8e",fee:95,rmo:8,accent:"#4d8ab5"},
-  CFU:{name:"Chase Freedom Unlimited",short:"CFU",color:"#3a7ca5",fee:0,rmo:null,accent:"#4a9cc5"},
-  GOLD:{name:"Amex Gold",short:"Gold",color:"#9e7c2e",fee:325,rmo:10,accent:"#c9a84c"},
-  BCE:{name:"Amex Blue Cash Everyday",short:"BCE",color:"#2e7eb8",fee:0,rmo:null,accent:"#3e9ed8"},
-  VX:{name:"Capital One Venture X",short:"VX",color:"#4a5568",fee:395,rmo:3,accent:"#718096"},
-  APPLE:{name:"Apple Card",short:"Apple",color:"#636366",fee:0,rmo:null,accent:"#8e8e93"},
-  DISC:{name:"Discover it",short:"Discover",color:"#c0713a",fee:0,rmo:null,accent:"#e08a4a"},
+const C={
+  CSR:{n:"Chase Sapphire Reserve",s:"CSR",co:"#4a7c9e",fee:795,rm:5,ac:"#5ba3cf"},
+  CSP:{n:"Chase Sapphire Preferred",s:"CSP",co:"#3d6b8e",fee:95,rm:8,ac:"#4d8ab5"},
+  CFU:{n:"Chase Freedom Unlimited",s:"CFU",co:"#3a7ca5",fee:0,rm:null,ac:"#4a9cc5"},
+  GOLD:{n:"Amex Gold",s:"Gold",co:"#9e7c2e",fee:325,rm:10,ac:"#c9a84c"},
+  BCE:{n:"Amex Blue Cash Everyday",s:"BCE",co:"#2e7eb8",fee:0,rm:null,ac:"#3e9ed8"},
+  VX:{n:"Capital One Venture X",s:"VX",co:"#4a5568",fee:395,rm:3,ac:"#718096"},
+  APPLE:{n:"Apple Card",s:"Apple",co:"#636366",fee:0,rm:null,ac:"#8e8e93"},
+  DISC:{n:"Discover it",s:"Discover",co:"#c0713a",fee:0,rm:null,ac:"#e08a4a"},
 };
 
 const MO=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const CM=new Date().getMonth();
 
-function renewLabel(ck){
-  const c=C[ck]; if(c.rmo===null)return"Calendar year";
-  const m=new Date().getMonth(),y=new Date().getFullYear();
-  const sy=m>=c.rmo?y:y-1, em=(c.rmo+11)%12, ey=sy+(em<c.rmo?1:0);
-  return MO[c.rmo]+" "+sy+" – "+MO[em]+" "+ey;
+function cycleMonths(rm){const st=rm!==null?rm:0;return Array.from({length:12},(_,i)=>(st+i)%12)}
+function monthPast(mi,rm){
+  const st=rm!==null?rm:0;
+  const pos=(mi-st+12)%12, cp=(CM-st+12)%12;
+  return pos<cp;
 }
 
-const SPEND=[
+function rl(ck){
+  const c=C[ck];if(c.rm===null)return"Calendar year";
+  const m=CM,y=new Date().getFullYear();
+  const sy=m>=c.rm?y:y-1,em=(c.rm+11)%12,ey=sy+(em<c.rm?1:0);
+  return MO[c.rm]+" "+sy+" – "+MO[em]+" "+ey;
+}
+
+const SP=[
   {cat:"Restaurants / Dining",best:"GOLD",rate:"4x MR",notes:"Worldwide. CSR 3x UR.",alts:["CSR 3x UR","CFU 3%","CSP 3x UR"]},
   {cat:"U.S. Supermarkets",best:"GOLD",rate:"4x MR",notes:"Up to $25k/yr then 1x. BCE 3% up to $6k.",alts:["BCE 3% (≤$6k)","CFU 1.5%"]},
-  {cat:"U.S. Gas Stations",best:"CSP",rate:"3x UR",notes:"New June 2026. BCE 3% up to $6k. Discover 5% Q3 2026.",alts:["BCE 3% (≤$6k)","Discover 5% (Q3)","VX 2x"]},
-  {cat:"EV Charging",best:"CSP",rate:"3x UR",notes:"New June 2026. Discover 5% Q3 2026.",alts:["Discover 5% (Q3)","Apple 3% (ChargePoint)"]},
-  {cat:"Flights (direct)",best:"CSR",rate:"3x UR",notes:"CSP also 3x. Discover 5% Q3 2026.",alts:["CSP 3x UR","Discover 5% (Q3)","VX 2x"]},
-  {cat:"Flights (portal)",best:"VX",rate:"5x miles",notes:"Capital One Travel. CSR/CSP 5x via Chase Travel.",alts:["CSR 5x UR","CSP 5x UR"]},
-  {cat:"Hotels (portal)",best:"VX",rate:"10x miles",notes:"Capital One Travel. Gold 5x Amex Travel prepaid.",alts:["GOLD 5x MR","CSR 5x UR"]},
+  {cat:"U.S. Gas Stations",best:"CSP",rate:"3x UR",notes:"New June 2026. BCE 3% ≤$6k. Discover 5% Q3.",alts:["BCE 3%","Discover 5% (Q3)","VX 2x"]},
+  {cat:"EV Charging",best:"CSP",rate:"3x UR",notes:"New June 2026. Discover 5% Q3.",alts:["Discover 5% (Q3)"]},
+  {cat:"Flights (direct)",best:"CSR",rate:"3x UR",notes:"CSP also 3x. Discover 5% Q3.",alts:["CSP 3x UR","VX 2x"]},
+  {cat:"Flights (portal)",best:"VX",rate:"5x miles",notes:"Capital One Travel. CSR/CSP 5x Chase Travel.",alts:["CSR 5x UR","CSP 5x UR"]},
+  {cat:"Hotels (portal)",best:"VX",rate:"10x miles",notes:"Capital One Travel. Gold 5x Amex Travel.",alts:["GOLD 5x MR","CSR 5x UR"]},
   {cat:"Hotels (direct)",best:"CSR",rate:"3x UR",notes:"3x on travel broadly.",alts:["CSP 3x UR","VX 2x"]},
   {cat:"Car Rentals (portal)",best:"VX",rate:"10x miles",notes:"Capital One Travel.",alts:["CSR 5x UR","CSP 5x UR"]},
-  {cat:"Car Rentals (direct)",best:"CSR",rate:"3x UR",notes:"Primary CDW insurance. CSP also primary.",alts:["CSP 3x UR","VX 2x"]},
-  {cat:"Vacation Rentals",best:"CSP",rate:"3x UR",notes:"Airbnb/Vrbo, new June 2026. VX 5x via portal.",alts:["VX 5x (portal)","CSR 3x UR"]},
-  {cat:"Streaming",best:"CSP",rate:"3x UR",notes:"Netflix, Spotify, Disney+, Hulu, YouTube Premium, etc.",alts:["CFU 1.5%","VX 2x"]},
-  {cat:"Online Retail (U.S.)",best:"BCE",rate:"3%",notes:"Up to $6k/yr then 1%.",alts:["Apple 2% (Apple Pay)","CFU 1.5%"]},
-  {cat:"Uber / Uber Eats",best:"GOLD",rate:"4x MR + $10/mo",notes:"Plus $10/mo Uber Cash. Apple 3% via Apple Pay.",alts:["Apple 3%","CSR 3x"]},
+  {cat:"Car Rentals (direct)",best:"CSR",rate:"3x UR",notes:"Primary CDW. CSP also primary.",alts:["CSP 3x UR","VX 2x"]},
+  {cat:"Vacation Rentals",best:"CSP",rate:"3x UR",notes:"Airbnb/Vrbo, new June 2026.",alts:["VX 5x (portal)","CSR 3x UR"]},
+  {cat:"Streaming",best:"CSP",rate:"3x UR",notes:"Netflix, Spotify, Disney+, Hulu, etc.",alts:["CFU 1.5%","VX 2x"]},
+  {cat:"Online Retail (U.S.)",best:"BCE",rate:"3%",notes:"Up to $6k/yr.",alts:["Apple 2% (Apple Pay)","CFU 1.5%"]},
+  {cat:"Uber / Uber Eats",best:"GOLD",rate:"4x MR + $10/mo",notes:"Plus $10/mo Uber Cash.",alts:["Apple 3%","CSR 3x"]},
   {cat:"Lyft",best:"CSR",rate:"5x UR",notes:"Through Sept 2027. CSP also 5x.",alts:["CSP 5x UR","GOLD 4x MR"]},
-  {cat:"Drugstores",best:"CFU",rate:"3%",notes:"Year-round. Discover 5% Q3 2026. Apple 3% Walgreens.",alts:["Discover 5% (Q3)","Apple 3% (Walgreens)"]},
-  {cat:"Transit",best:"CSR",rate:"3x UR",notes:"Coded as travel. Discover 5% Q3 2026.",alts:["CSP 3x UR","Discover 5% (Q3)"]},
+  {cat:"Drugstores",best:"CFU",rate:"3%",notes:"Year-round. Discover 5% Q3.",alts:["Discover 5% (Q3)","Apple 3% (Walgreens)"]},
+  {cat:"Transit",best:"CSR",rate:"3x UR",notes:"Coded as travel.",alts:["CSP 3x UR"]},
   {cat:"Apple Purchases",best:"APPLE",rate:"3%",notes:"Plus 0% APR on ACMI.",alts:["VX 2x","CFU 1.5%"]},
-  {cat:"Everything Else",best:"VX",rate:"2x miles",notes:"Flat 2x. CFU 1.5% if you prefer UR. Apple 2% w/ Apple Pay.",alts:["CFU 1.5% UR","Apple 2% (Apple Pay)"]},
-  {cat:"Dunkin'",best:"GOLD",rate:"4x MR + $7/mo",notes:"$7/mo credit. $84/yr.",alts:["CFU 3% (dining)"]},
-  {cat:"Grubhub / DoorDash",best:"GOLD",rate:"4x MR + credits",notes:"Gold $10/mo dining at Grubhub. CSR $25/mo DoorDash.",alts:["CSR $25/mo DoorDash"]},
-  {cat:"Nike",best:"APPLE",rate:"3%",notes:"Via Apple Pay.",alts:["VX 2x","CFU 1.5%"]},
+  {cat:"Everything Else",best:"VX",rate:"2x miles",notes:"Flat 2x. CFU 1.5% for UR. Apple 2% w/ Apple Pay.",alts:["CFU 1.5% UR","Apple 2%"]},
+  {cat:"Dunkin'",best:"GOLD",rate:"4x MR + $7/mo",notes:"$7/mo credit. $84/yr.",alts:["CFU 3%"]},
+  {cat:"Grubhub / DoorDash",best:"GOLD",rate:"4x MR + credits",notes:"Gold $10/mo at Grubhub. CSR $25/mo DoorDash.",alts:["CSR $25/mo DoorDash"]},
+  {cat:"Nike",best:"APPLE",rate:"3%",notes:"Via Apple Pay.",alts:["VX 2x"]},
   {cat:"Exxon / Mobil",best:"APPLE",rate:"3%",notes:"Via Apple Pay. BCE 3% gas.",alts:["BCE 3%","CSP 3x UR"]},
 ];
 
 const CR=[
   // CSR
-  {id:"csr-travel",card:"CSR",name:"$300 Travel Credit",amt:300,per:"annual",reset:"Anniversary (Jun)",notes:"Auto-applied on travel purchases."},
-  {id:"csr-edit1",card:"CSR",name:"The Edit Hotel #1",amt:250,per:"annual",reset:"Calendar year",notes:"Prepaid 2+ night via The Edit on Chase Travel."},
-  {id:"csr-edit2",card:"CSR",name:"The Edit Hotel #2",amt:250,per:"annual",reset:"Calendar year",notes:"Second $250. Fully flexible in 2026."},
-  {id:"csr-hotel250",card:"CSR",name:"$250 Select Hotel (2026 only)",amt:250,per:"annual",reset:"Expires Dec 31 2026",notes:"IHG, Omni, Virgin, Montage, Pendry via Chase Travel. 2+ nights."},
-  {id:"csr-dining-h1",card:"CSR",name:"Dining (Exclusive Tables) — H1",amt:150,per:"semi",reset:"Jan–Jun",notes:"Book via OpenTable Exclusive Tables."},
-  {id:"csr-dining-h2",card:"CSR",name:"Dining (Exclusive Tables) — H2",amt:150,per:"semi",reset:"Jul–Dec",notes:"Book via OpenTable Exclusive Tables."},
-  {id:"csr-stubhub-h1",card:"CSR",name:"StubHub / viagogo — H1",amt:150,per:"semi",reset:"Jan–Jun",notes:"Activation required. Through Dec 2027."},
-  {id:"csr-stubhub-h2",card:"CSR",name:"StubHub / viagogo — H2",amt:150,per:"semi",reset:"Jul–Dec",notes:"Activation required. Through Dec 2027."},
-  {id:"csr-dd",card:"CSR",name:"DoorDash Credit",amt:300,per:"monthly",mv:25,reset:"$25/month",notes:"Through Dec 2027."},
-  {id:"csr-dashpass",card:"CSR",name:"DashPass Membership",amt:120,per:"annual",reset:"Ongoing",notes:"Free DashPass ($10/mo value). Through Dec 2027."},
-  {id:"csr-lyft",card:"CSR",name:"Lyft Credit",amt:120,per:"monthly",mv:10,reset:"$10/month",notes:"Through Sept 2027."},
-  {id:"csr-peloton",card:"CSR",name:"Peloton Credit",amt:120,per:"monthly",mv:10,reset:"$10/month",notes:"Activation required. Through Dec 2027."},
-  {id:"csr-atv",card:"CSR",name:"Apple TV+",amt:132,per:"annual",reset:"Through Jun 2027",notes:"One-time activation. ~$11/mo."},
-  {id:"csr-amusic",card:"CSR",name:"Apple Music",amt:156,per:"annual",reset:"Through Jun 2027",notes:"One-time activation. ~$13/mo."},
-  {id:"csr-ge",card:"CSR",name:"Global Entry / PreCheck",amt:120,per:"quad",reset:"Every 4 years",notes:"Up to $120. Covers NEXUS."},
+  {id:"csr-travel",card:"CSR",name:"Travel Credit",amt:300,per:"a",reset:"Anniversary",notes:"Auto-applied on travel purchases."},
+  {id:"csr-edit1",card:"CSR",name:"The Edit Hotel #1",amt:250,per:"a",reset:"Calendar year",notes:"Prepaid 2+ night via The Edit on Chase Travel."},
+  {id:"csr-edit2",card:"CSR",name:"The Edit Hotel #2",amt:250,per:"a",reset:"Calendar year",notes:"Second $250. Fully flexible in 2026."},
+  {id:"csr-hotel250",card:"CSR",name:"Select Hotel (2026 only)",amt:250,per:"a",reset:"Expires Dec 31 2026",notes:"IHG, Omni, Virgin, Montage, Pendry via Chase Travel. 2+ nights."},
+  {id:"csr-dining-h1",card:"CSR",name:"Dining Credit — H1",amt:150,per:"s",reset:"Jan–Jun",notes:"Via OpenTable Exclusive Tables."},
+  {id:"csr-dining-h2",card:"CSR",name:"Dining Credit — H2",amt:150,per:"s",reset:"Jul–Dec",notes:"Via OpenTable Exclusive Tables."},
+  {id:"csr-stub-h1",card:"CSR",name:"StubHub — H1",amt:150,per:"s",reset:"Jan–Jun",notes:"Activation required. Through Dec 2027."},
+  {id:"csr-stub-h2",card:"CSR",name:"StubHub — H2",amt:150,per:"s",reset:"Jul–Dec",notes:"Activation required. Through Dec 2027."},
+  {id:"csr-dd",card:"CSR",name:"DoorDash Credit",amt:300,per:"m",mv:25,reset:"$25/mo",notes:"Through Dec 2027."},
+  {id:"csr-dashpass",card:"CSR",name:"DashPass Membership",amt:120,per:"a",reset:"Ongoing",notes:"Free DashPass (~$10/mo value). Through Dec 2027."},
+  {id:"csr-lyft",card:"CSR",name:"Lyft Credit",amt:120,per:"m",mv:10,reset:"$10/mo",notes:"Through Sept 2027."},
+  {id:"csr-peloton",card:"CSR",name:"Peloton Credit",amt:120,per:"m",mv:10,reset:"$10/mo",notes:"Activation required. Through Dec 2027."},
+  {id:"csr-atv",card:"CSR",name:"Apple TV+",amt:132,per:"a",reset:"Through Jun 2027",notes:"One-time activation. ~$11/mo."},
+  {id:"csr-amusic",card:"CSR",name:"Apple Music",amt:156,per:"a",reset:"Through Jun 2027",notes:"One-time activation. ~$13/mo."},
+  {id:"csr-ge",card:"CSR",name:"Global Entry / PreCheck",amt:120,per:"q",reset:"Every 4 years",notes:"Up to $120. Covers NEXUS."},
   // CSP
-  {id:"csp-hotel",card:"CSP",name:"$100 Hotel Credit",amt:100,per:"annual",reset:"Anniversary (Sep)",notes:"Hotels via Chase Travel. Doubled from $50 Jun 2026."},
-  {id:"csp-ge",card:"CSP",name:"Global Entry / PreCheck",amt:120,per:"quad",reset:"Every 4 years",notes:"Up to $120. Covers NEXUS."},
-  {id:"csp-atv",card:"CSP",name:"Apple TV+ (1 year)",amt:156,per:"annual",reset:"Activate by Dec 31 2026",notes:"One-time via Chase app."},
-  {id:"csp-dashpass",card:"CSP",name:"DashPass Membership",amt:120,per:"annual",reset:"Ongoing",notes:"Free DashPass. Activate by 12/31/27."},
-  {id:"csp-dd",card:"CSP",name:"DoorDash $10/mo Promo",amt:120,per:"monthly",mv:10,reset:"$10/month",notes:"Non-restaurant DoorDash orders. Through Dec 2027."},
+  {id:"csp-hotel",card:"CSP",name:"Hotel Credit",amt:100,per:"a",reset:"Anniversary",notes:"Hotels via Chase Travel. Doubled from $50 Jun 2026."},
+  {id:"csp-ge",card:"CSP",name:"Global Entry / PreCheck",amt:120,per:"q",reset:"Every 4 years",notes:"Up to $120."},
+  {id:"csp-atv",card:"CSP",name:"Apple TV+ (1 year)",amt:156,per:"a",reset:"Activate by Dec 31 2026",notes:"One-time via Chase app."},
+  {id:"csp-dashpass",card:"CSP",name:"DashPass Membership",amt:120,per:"a",reset:"Ongoing",notes:"Free DashPass. Activate by 12/31/27."},
+  {id:"csp-dd",card:"CSP",name:"DoorDash $10/mo Promo",amt:120,per:"m",mv:10,reset:"$10/mo",notes:"Non-restaurant DoorDash orders. Through Dec 2027."},
   // GOLD
-  {id:"gold-uber",card:"GOLD",name:"Uber Cash",amt:120,per:"monthly",mv:10,reset:"$10/month",notes:"Add Gold to Uber app. Use-or-lose monthly."},
-  {id:"gold-dining",card:"GOLD",name:"Dining Credit",amt:120,per:"monthly",mv:10,reset:"$10/month",notes:"Grubhub, Cheesecake Factory, BWW, Wonder, Five Guys."},
-  {id:"gold-resy-h1",card:"GOLD",name:"Resy Credit — H1",amt:50,per:"semi",reset:"Jan–Jun",notes:"Any qualifying U.S. Resy restaurant."},
-  {id:"gold-resy-h2",card:"GOLD",name:"Resy Credit — H2",amt:50,per:"semi",reset:"Jul–Dec",notes:"Any qualifying U.S. Resy restaurant."},
-  {id:"gold-dunkin",card:"GOLD",name:"Dunkin' Credit",amt:84,per:"monthly",mv:7,reset:"$7/month",notes:"U.S. Dunkin' locations."},
-  {id:"gold-hotel",card:"GOLD",name:"Hotel Collection Credit",amt:100,per:"annual",reset:"Per qualifying stay",notes:"$100 property credit on 2+ night Hotel Collection stays."},
+  {id:"gold-uber",card:"GOLD",name:"Uber Cash",amt:120,per:"m",mv:10,reset:"$10/mo",notes:"Add Gold to Uber app. Use-or-lose monthly."},
+  {id:"gold-dining",card:"GOLD",name:"Dining Credit",amt:120,per:"m",mv:10,reset:"$10/mo",notes:"Grubhub, Cheesecake Factory, BWW, Wonder, Five Guys."},
+  {id:"gold-resy-h1",card:"GOLD",name:"Resy Credit — H1",amt:50,per:"s",reset:"Jan–Jun",notes:"Any qualifying U.S. Resy restaurant."},
+  {id:"gold-resy-h2",card:"GOLD",name:"Resy Credit — H2",amt:50,per:"s",reset:"Jul–Dec",notes:"Any qualifying U.S. Resy restaurant."},
+  {id:"gold-dunkin",card:"GOLD",name:"Dunkin' Credit",amt:84,per:"m",mv:7,reset:"$7/mo",notes:"U.S. Dunkin' locations."},
+  {id:"gold-hotel",card:"GOLD",name:"Hotel Collection",amt:100,per:"a",reset:"Per qualifying stay",notes:"$100 property credit on 2+ night stays."},
   // BCE
-  {id:"bce-disney",card:"BCE",name:"Disney Bundle Credit",amt:84,per:"monthly",mv:7,reset:"$7/month",notes:"Disney+, Hulu, ESPN+ bundle."},
-  {id:"bce-homechef",card:"BCE",name:"Home Chef Credit",amt:180,per:"monthly",mv:15,reset:"$15/month",notes:"Home Chef meal kit."},
+  {id:"bce-disney",card:"BCE",name:"Disney Bundle",amt:84,per:"m",mv:7,reset:"$7/mo",notes:"Disney+, Hulu, ESPN+ bundle."},
+  {id:"bce-homechef",card:"BCE",name:"Home Chef",amt:180,per:"m",mv:15,reset:"$15/mo",notes:"Home Chef meal kit."},
   // VX
-  {id:"vx-travel",card:"VX",name:"$300 Travel Credit",amt:300,per:"annual",reset:"Anniversary (Apr)",notes:"Via Capital One Travel. Auto-applied."},
-  {id:"vx-miles",card:"VX",name:"10k Anniversary Miles",amt:100,per:"annual",reset:"Anniversary (Apr)",notes:"~$100 value."},
-  {id:"vx-ge",card:"VX",name:"Global Entry / PreCheck",amt:120,per:"quad",reset:"Every 4 years",notes:"Up to $120."},
+  {id:"vx-travel",card:"VX",name:"Travel Credit",amt:300,per:"a",reset:"Anniversary",notes:"Via Capital One Travel. Auto-applied."},
+  {id:"vx-miles",card:"VX",name:"10k Anniversary Miles",amt:100,per:"a",reset:"Anniversary",notes:"~$100 value."},
+  {id:"vx-ge",card:"VX",name:"Global Entry / PreCheck",amt:120,per:"q",reset:"Every 4 years",notes:"Up to $120."},
+];
+
+const BD=[
+  {n:"Primary CDW",d:"Covers damage/theft of rental cars as primary insurance — your personal auto policy isn't involved and your rates won't go up. Decline the counter insurance entirely."},
+  {n:"Secondary CDW",d:"Covers rental car damage/theft only after your personal auto insurance pays first. Still useful — covers your deductible and prevents rate increases."},
+  {n:"Trip Cancellation/Interruption",d:"Reimburses prepaid non-refundable trip costs if you cancel or cut short for covered reasons: illness, injury, severe weather, jury duty, employer termination."},
+  {n:"Trip Delay",d:"Reimburses meals, hotel, and essentials when your trip is delayed by a covered reason. Minimum delay varies by card (6-12 hrs). Keep receipts."},
+  {n:"Lost Luggage",d:"Reimburses the value of your luggage and contents if permanently lost by the carrier. File a claim with the airline first."},
+  {n:"Baggage Delay",d:"Covers essential purchases (clothes, toiletries) when your checked bag is delayed 6+ hours. Keep all receipts. Typically $100/day cap."},
+  {n:"Purchase Protection",d:"Covers new purchases against damage or theft for 90-120 days from purchase date. File a police report for theft. Does not cover lost items."},
+  {n:"Extended Warranty",d:"Adds 1 extra year to the manufacturer's warranty (up to original warranties of 3-5 years depending on card). Keep your receipt and warranty docs."},
+  {n:"Return Protection",d:"If a store won't take a return within 90 days, the card issuer refunds you. Typically up to $500/item."},
+  {n:"Priority Pass",d:"Access to 1,400+ airport lounges worldwide. Show your Priority Pass card or QR code at the lounge desk. Guest policies vary by card."},
+  {n:"No FTX Fees",d:"No foreign transaction fee (typically 3%) on purchases made in non-USD currencies or processed by foreign banks."},
+  {n:"Cell Phone Protection",d:"Covers damage or theft of your cell phone up to the stated limit. Requirement: pay your monthly phone bill with this card. Deductible applies per claim."},
+  {n:"Global Entry / PreCheck",d:"Statement credit for the Global Entry ($120) or TSA PreCheck ($85) application fee. Apply once every 4-5 years. Global Entry includes PreCheck."},
+  {n:"DashPass",d:"Waives DoorDash delivery fees and reduces service fees on eligible orders. Normally $9.99/mo."},
+  {n:"ACMI",d:"Apple Card Monthly Installments: 0% APR financing on Apple products. No fees, no interest. Available only on Apple Card."},
+  {n:"Emergency Evacuation",d:"Covers emergency medical evacuation to the nearest adequate medical facility, and medically necessary transport home. Can be worth $50k-$100k+ in a real emergency."},
+  {n:"Travel Accident Insurance",d:"Pays a benefit if you suffer a serious injury or death during a covered trip booked on the card. Not the same as travel medical insurance."},
+  {n:"Hertz President's Circle",d:"Top-tier Hertz status: guaranteed car class upgrades, priority service, free additional driver, and premium vehicle availability."},
 ];
 
 const BEN=[
-  {card:"CSR",items:["Primary auto rental CDW ($75k, business rentals too)","Trip cancellation/interruption ($10k/person, $20k/trip)","Trip delay (6+ hrs, $500/ticket)","Lost luggage ($3k/person)","Baggage delay (6+ hrs, $100/day × 5)","Purchase protection (120 days, $500/claim, $50k/yr)","Extended warranty (+1 yr, $10k/item)","Return protection (90 days, $500/claim)","Priority Pass + Sapphire Lounges (you + 2)","Emergency medical evacuation","No FTX fees","Hertz President's Circle"]},
-  {card:"CSP",items:["Primary auto rental CDW (personal, $75k)","Trip cancellation/interruption ($10k/person, $20k/trip)","Trip delay (6+ hrs)","Lost luggage + baggage delay","Purchase protection (120 days, $500/claim, $50k/yr)","Extended warranty (+1 yr, $10k/item)","Emergency evacuation (new June 2026)","No FTX fees","Hertz President's Circle","1 year Apple TV+"]},
-  {card:"CFU",items:["Purchase protection (120 days, $500/claim)","Extended warranty (+1 yr, $10k/item)","Secondary auto rental CDW","6 months free DashPass","No annual fee","0% intro APR 15 months"]},
-  {card:"GOLD",items:["No FTX fees","Trip delay ($300/trip, 12+ hrs)","Baggage insurance ($1,250 carry-on, $500 checked)","Purchase protection (90 days, $1k/incident, $50k/yr)","Extended warranty (+1 yr, warranties ≤5 yrs)","Hertz Five Star status","Hotel Collection: $100 credit + upgrade on 2+ nights","No preset spending limit","5 authorized users free"]},
-  {card:"BCE",items:["Purchase protection (90 days, $1k/incident)","Extended warranty (+1 yr, ≤5 yrs)","Secondary car rental insurance","No annual fee","0% intro APR 15 months","Amex Offers"]},
-  {card:"VX",items:["Capital One Lounges (you + 2 guests)","Priority Pass lounges","Secondary auto rental CDW (Visa Infinite)","Travel accident insurance ($500k)","No FTX fees","Hertz President's Circle","Premier Collection: $100 credit on 2+ nights","15+ transfer partners","Cell phone protection ($800, $25 deductible) — pay bill with card"]},
-  {card:"APPLE",items:["No annual fee, no FTX fees, no late fees","0% APR on Apple device installments (ACMI)","Daily Cash posted instantly","Mastercard ID theft + ShopRunner","Uber One 6-month trial","Hertz: roadside + additional driver + LDW $16","No purchase protection or extended warranty"]},
-  {card:"DISC",items:["No annual fee, no FTX fees","Cashback Match (100% match first year)","Free FICO score","No penalty APR","Instant account freeze","$0 fraud liability","No purchase protection or extended warranty"]},
+  {card:"CSR",items:[
+    {t:"Primary CDW (up to $75k, business rentals too)",k:"Primary CDW"},
+    {t:"Trip cancellation/interruption ($10k/person, $20k/trip)",k:"Trip Cancellation/Interruption"},
+    {t:"Trip delay reimbursement (6+ hrs, $500/ticket)",k:"Trip Delay"},
+    {t:"Lost luggage ($3k/person)",k:"Lost Luggage"},
+    {t:"Baggage delay (6+ hrs, $100/day × 5)",k:"Baggage Delay"},
+    {t:"Purchase protection (120 days, $500/claim, $50k/yr)",k:"Purchase Protection"},
+    {t:"Extended warranty (+1 yr, $10k/item)",k:"Extended Warranty"},
+    {t:"Return protection (90 days, $500/claim)",k:"Return Protection"},
+    {t:"Priority Pass + Sapphire Lounges (you + 2)",k:"Priority Pass"},
+    {t:"Emergency medical evacuation",k:"Emergency Evacuation"},
+    {t:"No foreign transaction fees",k:"No FTX Fees"},
+    {t:"Hertz President's Circle",k:"Hertz President's Circle"},
+  ]},
+  {card:"CSP",items:[
+    {t:"Primary CDW (personal, $75k)",k:"Primary CDW"},
+    {t:"Trip cancellation/interruption ($10k/person, $20k/trip)",k:"Trip Cancellation/Interruption"},
+    {t:"Trip delay reimbursement (6+ hrs)",k:"Trip Delay"},
+    {t:"Lost luggage + baggage delay",k:"Lost Luggage"},
+    {t:"Purchase protection (120 days, $500/claim, $50k/yr)",k:"Purchase Protection"},
+    {t:"Extended warranty (+1 yr, $10k/item)",k:"Extended Warranty"},
+    {t:"Emergency evacuation (new June 2026)",k:"Emergency Evacuation"},
+    {t:"No foreign transaction fees",k:"No FTX Fees"},
+    {t:"Hertz President's Circle",k:"Hertz President's Circle"},
+  ]},
+  {card:"CFU",items:[
+    {t:"Purchase protection (120 days, $500/claim)",k:"Purchase Protection"},
+    {t:"Extended warranty (+1 yr, $10k/item)",k:"Extended Warranty"},
+    {t:"Secondary auto rental CDW",k:"Secondary CDW"},
+    {t:"6 months free DashPass",k:"DashPass"},
+    {t:"No annual fee",k:null},
+    {t:"0% intro APR 15 months",k:null},
+  ]},
+  {card:"GOLD",items:[
+    {t:"No foreign transaction fees",k:"No FTX Fees"},
+    {t:"Trip delay ($300/trip, 12+ hrs)",k:"Trip Delay"},
+    {t:"Baggage insurance ($1,250 carry-on, $500 checked)",k:"Baggage Delay"},
+    {t:"Purchase protection (90 days, $1k/incident, $50k/yr)",k:"Purchase Protection"},
+    {t:"Extended warranty (+1 yr, warranties ≤5 yrs)",k:"Extended Warranty"},
+    {t:"Hertz Five Star status",k:null},
+    {t:"Hotel Collection: $100 credit + upgrade on 2+ nights",k:null},
+    {t:"No preset spending limit",k:null},
+  ]},
+  {card:"BCE",items:[
+    {t:"Purchase protection (90 days, $1k/incident)",k:"Purchase Protection"},
+    {t:"Extended warranty (+1 yr, ≤5 yrs)",k:"Extended Warranty"},
+    {t:"Secondary car rental insurance",k:"Secondary CDW"},
+    {t:"No annual fee",k:null},
+    {t:"0% intro APR 15 months",k:null},
+  ]},
+  {card:"VX",items:[
+    {t:"Capital One Lounges (you + 2 guests)",k:"Priority Pass"},
+    {t:"Priority Pass lounges",k:"Priority Pass"},
+    {t:"Secondary CDW (Visa Infinite)",k:"Secondary CDW"},
+    {t:"Travel accident insurance ($500k)",k:"Travel Accident Insurance"},
+    {t:"No foreign transaction fees",k:"No FTX Fees"},
+    {t:"Hertz President's Circle",k:"Hertz President's Circle"},
+    {t:"Cell phone protection ($800, $25 deductible)",k:"Cell Phone Protection"},
+    {t:"15+ transfer partners",k:null},
+  ]},
+  {card:"APPLE",items:[
+    {t:"No annual fee, no FTX fees, no late fees",k:"No FTX Fees"},
+    {t:"0% APR on Apple device installments (ACMI)",k:"ACMI"},
+    {t:"Daily Cash posted instantly",k:null},
+    {t:"Mastercard ID theft + ShopRunner",k:null},
+    {t:"No purchase protection or extended warranty",k:null},
+  ]},
+  {card:"DISC",items:[
+    {t:"No annual fee, no FTX fees",k:"No FTX Fees"},
+    {t:"Cashback Match (100% match first year)",k:null},
+    {t:"Free FICO score",k:null},
+    {t:"No penalty APR",k:null},
+    {t:"No purchase protection or extended warranty",k:null},
+  ]},
 ];
 
 const PUR=[
   {sc:"Flights (direct)",best:"CSR",why:"3x UR + trip cancellation + delay + luggage. ~6% effective with full protection."},
-  {sc:"Flights (portal)",best:"VX",why:"5x miles via Capital One Travel. CSR/CSP 5x via Chase Travel."},
+  {sc:"Flights (portal)",best:"VX",why:"5x miles Capital One Travel. CSR/CSP 5x Chase Travel."},
   {sc:"Car Rental",best:"CSR",why:"Primary CDW up to $75k. Decline counter insurance. CSP also primary for personal."},
-  {sc:"Electronics",best:"CSR",why:"120-day purchase protection ($500/claim) + extended warranty (+1 yr). CSP identical. Gold: 90 days, $1k/incident."},
+  {sc:"Electronics",best:"CSR",why:"120-day purchase protection ($500/claim) + extended warranty. CSP identical. Gold: 90 days, $1k/incident."},
   {sc:"Appliances",best:"CSR",why:"Purchase protection + extended warranty. Extra year on warranties ≤3 years."},
-  {sc:"Furniture / Home",best:"GOLD",why:"Purchase protection up to $1k/incident (vs Chase $500/claim). VX 2x if earning rate matters more."},
-  {sc:"International Purchases",best:"CSR",why:"No FTX + 3x travel/dining. Bring Gold for 4x dining (weaker Amex acceptance abroad)."},
-  {sc:"Hotel (luxury 2+ nights)",best:"CSR",why:"Stack Edit credits (up to $500) + 2026 select hotel ($250). Can save $750+."},
+  {sc:"Furniture / Home",best:"GOLD",why:"Up to $1k/incident purchase protection (vs Chase $500/claim). VX 2x for earning."},
+  {sc:"International Purchases",best:"CSR",why:"No FTX + 3x travel/dining. Bring Gold for 4x dining (weaker Amex acceptance)."},
+  {sc:"Hotel (luxury 2+ nights)",best:"CSR",why:"Stack Edit credits (up to $500) + 2026 select hotel ($250). Save $750+."},
   {sc:"Hotel (IHG/Omni/Virgin)",best:"CSR",why:"2026-only $250 credit via Chase Travel. 2+ nights prepaid."},
-  {sc:"Apple Products",best:"APPLE",why:"3% Daily Cash + 0% APR on ACMI. Only card with 0% on Apple devices."},
+  {sc:"Apple Products",best:"APPLE",why:"3% Daily Cash + 0% APR ACMI. Only card with 0% on Apple devices."},
   {sc:"Concert / Event Tickets",best:"CSR",why:"$300/yr StubHub credit ($150/half). 3x on entertainment."},
-  {sc:"Vacation Rental",best:"CSP",why:"3x UR on Airbnb/Vrbo (June 2026). VX 5x via portal if listed."},
-  {sc:"Gas (large fill-ups)",best:"CSP",why:"3x UR (June 2026). Discover 5% Q3 2026. BCE 3% year-round ≤$6k."},
+  {sc:"Vacation Rental",best:"CSP",why:"3x UR Airbnb/Vrbo (June 2026). VX 5x via portal if listed."},
+  {sc:"Gas (large fill-ups)",best:"CSP",why:"3x UR (June 2026). Discover 5% Q3. BCE 3% year-round ≤$6k."},
   {sc:"Cell Phone Bill",best:"VX",why:"Unlocks cell phone protection: $800 coverage, $25 deductible. Plus 2x miles."},
 ];
 
 // State
-let tab="value", exp=null, U={};
+let tab="value",exp=null,bexp={},U={};
 function load(){try{U=JSON.parse(localStorage.getItem("wov3")||"{}")}catch(e){U={}}}
 function save(){try{localStorage.setItem("wov3",JSON.stringify(U))}catch(e){}}
 function tog(k){U[k]=!U[k];if(!U[k])delete U[k];save();render()}
@@ -220,138 +320,164 @@ load();
 function val(ck){
   let t=0;
   CR.filter(c=>c.card===ck).forEach(cr=>{
-    if(cr.per==="monthly"){
-      MO.forEach((_,mi)=>{if(U[cr.id+"_"+mi])t+=(cr.mv||cr.amt/12)});
-    }else if(cr.per==="semi"){
-      if(U[cr.id])t+=cr.amt;
-    }else{
-      if(U[cr.id])t+=cr.amt;
-    }
+    if(cr.per==="m"){MO.forEach((_,mi)=>{if(U[cr.id+"_"+mi])t+=(cr.mv||cr.amt/12)})}
+    else{if(U[cr.id])t+=cr.amt}
   });
   return t;
 }
 function maxV(ck){return CR.filter(c=>c.card===ck).reduce((s,c)=>s+c.amt,0)}
 
 // Render
-function renderTabs(){
+function rTabs(){
   const ts=[{id:"value",l:"Value"},{id:"optimizer",l:"Spend"},{id:"credits",l:"Credits"},{id:"benefits",l:"Benefits"},{id:"purchases",l:"Purchases"}];
   document.getElementById("tabs").innerHTML=ts.map(t=>`<button class="tab${tab===t.id?' on':''}" onclick="sw('${t.id}')">${t.l}</button>`).join("");
 }
-function sw(id){tab=id;exp=null;renderTabs();render()}
-
-document.getElementById("hdr-sub").textContent="8 cards · "+new Date().toLocaleDateString("en-US",{month:"long",year:"numeric"});
+function sw(id){tab=id;exp=null;bexp={};rTabs();render()}
+document.getElementById("hsub").textContent="8 cards · "+new Date().toLocaleDateString("en-US",{month:"long",year:"numeric"});
 
 function render(){
   const el=document.getElementById("ct");
-  if(tab==="value")el.innerHTML=rValue();
-  else if(tab==="optimizer")el.innerHTML=rSpend();
-  else if(tab==="credits")el.innerHTML=rCredits();
-  else if(tab==="benefits")el.innerHTML=rBen();
-  else el.innerHTML=rPur();
+  if(tab==="value")el.innerHTML=rVal();
+  else if(tab==="optimizer")el.innerHTML=rSp();
+  else if(tab==="credits")el.innerHTML=rCr();
+  else if(tab==="benefits")el.innerHTML=rBn();
+  else el.innerHTML=rPu();
 }
 
-function rValue(){
-  const feeCards=Object.entries(C).filter(([,c])=>c.fee>0);
+// VALUE
+function rVal(){
+  const fc=Object.entries(C).filter(([,c])=>c.fee>0);
   const tc=Object.keys(C).reduce((s,k)=>s+val(k),0);
-  const tf=feeCards.reduce((s,[,c])=>s+c.fee,0);
+  const tf=fc.reduce((s,[,c])=>s+c.fee,0);
   const nv=tc-tf;
-  let h=`<div class="v-hero">
-    <div class="v-label">Net Value (Credits − Fees)</div>
-    <div class="v-big" style="color:${nv>=0?'var(--green)':'var(--red)'}">${nv>=0?'+':''}$${nv.toLocaleString()}</div>
-    <div class="v-cols">
-      <div><div class="v-col-lbl">Collected</div><div class="v-col-val" style="color:var(--green)">$${tc.toLocaleString()}</div></div>
-      <div><div class="v-col-lbl">Fees</div><div class="v-col-val" style="color:var(--red)">$${tf.toLocaleString()}</div></div>
-    </div>
-  </div>`;
+  let h=`<div class="vhero">
+    <div class="vlbl">Net Value (Credits − Fees)</div>
+    <div class="vbig" style="color:${nv>=0?'var(--gn)':'var(--rd)'}">${nv>=0?'+':''}$${nv.toLocaleString()}</div>
+    <div class="vcols"><div><div class="vcl">Collected</div><div class="vcv" style="color:var(--gn)">$${tc.toLocaleString()}</div></div>
+    <div><div class="vcl">Fees</div><div class="vcv" style="color:var(--rd)">$${tf.toLocaleString()}</div></div></div></div>`;
 
-  feeCards.forEach(([ck,card])=>{
-    const col=val(ck), mx=maxV(ck), nt=col-card.fee, pct=mx>0?Math.round(col/mx*100):0;
-    h+=`<div class="v-card">
-      <div class="v-card-top">
-        <div><div class="v-card-name">${card.name}</div><div class="v-card-sub">Renews ${MO[card.rmo]} · ${renewLabel(ck)}</div></div>
-        <div><div class="v-card-net" style="color:${nt>=0?'var(--green)':'var(--red)'}">${nt>=0?'+':''}$${nt}</div><div class="v-card-net-lbl">net</div></div>
-      </div>
-      <div class="pbar"><div class="pbar-fill" style="width:${pct}%;background:linear-gradient(90deg,${card.accent},var(--accent))"></div></div>
-      <div class="pbar-info"><span>$${col} of $${mx} (${pct}%)</span><span>$${card.fee} fee</span></div>
-    </div>`;
+  fc.forEach(([ck,card])=>{
+    const co=val(ck),mx=maxV(ck),nt=co-card.fee,pct=mx>0?Math.round(co/mx*100):0;
+    h+=`<div class="vcd"><div class="vct"><div><div class="vcn">${card.n}</div><div class="vcs">Renews ${MO[card.rm]} · ${rl(ck)}</div></div>
+    <div><div class="vcnet" style="color:${nt>=0?'var(--gn)':'var(--rd)'}">${nt>=0?'+':''}$${nt}</div><div class="vcnl">net</div></div></div>
+    <div class="pb"><div class="pbf" style="width:${pct}%;background:linear-gradient(90deg,${card.ac},var(--ac))"></div></div>
+    <div class="pbi"><span>$${co} of $${mx} (${pct}%)</span><span>$${card.fee} fee</span></div></div>`;
   });
 
-  const nfCards=Object.entries(C).filter(([ck,c])=>c.fee===0&&maxV(ck)>0);
-  if(nfCards.length){
-    h+=`<div class="nf-lbl">No-Fee Cards</div>`;
-    nfCards.forEach(([ck,card])=>{
-      h+=`<div class="nf-row"><span>${card.short}</span><span style="font-weight:600;color:var(--green)">$${val(ck)} / $${maxV(ck)}</span></div>`;
-    });
+  const nfc=Object.entries(C).filter(([ck,c])=>c.fee===0&&maxV(ck)>0);
+  if(nfc.length){
+    h+=`<div class="nfl">No-Fee Cards</div>`;
+    nfc.forEach(([ck,card])=>{h+=`<div class="nfr"><span>${card.s}</span><span style="font-weight:600;color:var(--gn)">$${val(ck)} / $${maxV(ck)}</span></div>`});
   }
+
+  h+=`<div class="xbtn"><button class="xb" onclick="doExport()">Export Data</button><button class="xb" onclick="doImport()">Import Data</button><button class="xb danger" onclick="doReset()">Reset All</button></div>`;
   return h;
 }
 
-function rSpend(){
+// SPEND
+function rSp(){
   const sv=document.querySelector(".search")?.value||"";
-  const f=SPEND.filter(s=>s.cat.toLowerCase().includes(sv.toLowerCase()));
+  const f=SP.filter(s=>s.cat.toLowerCase().includes(sv.toLowerCase()));
   let h=`<input class="search" type="text" placeholder="Search category..." oninput="render()" value="${sv}">
-    <div class="hint">Tap to expand. Rates reflect June 2026.</div>`;
+    <div class="hint">Tap to expand. June 2026 rates.</div>`;
   f.forEach((s,i)=>{
     const o=exp===i;
-    h+=`<div class="card tap" onclick="tRow(${i})">
-      <div class="row-top"><div>
-        <div class="title">${s.cat}</div>
-        <div class="meta"><span class="badge" style="background:${C[s.best].color}">${C[s.best].short}</span><span class="rate">${s.rate}</span></div>
-      </div><span class="chev${o?' open':''}">▾</span></div>
-      ${o?`<div class="detail"><div class="detail-notes">${s.notes}</div>${s.alts.length?`<div class="alts-lbl">Alternatives</div><div class="alts">${s.alts.map(a=>`<span class="alt">${a}</span>`).join("")}</div>`:""}</div>`:""}
-    </div>`;
+    h+=`<div class="cd tap" onclick="tRow(${i})"><div class="row-top"><div>
+      <div class="ttl">${s.cat}</div><div class="meta"><span class="badge" style="background:${C[s.best].co}">${C[s.best].s}</span><span class="rate">${s.rate}</span></div>
+    </div><span class="chev${o?' open':''}">▾</span></div>
+    ${o?`<div class="detail"><div class="dnotes">${s.notes}</div>${s.alts.length?`<div class="albl">Alternatives</div><div class="alts">${s.alts.map(a=>`<span class="alt">${a}</span>`).join("")}</div>`:""}</div>`:""}</div>`;
   });
   return h;
 }
 function tRow(i){exp=exp===i?null:i;render()}
 
-function rCredits(){
-  const cardKeys=[...new Set(CR.map(c=>c.card))];
-  let h=`<div class="hint">Tap months to mark used. Data saves to your device.</div>`;
-  cardKeys.forEach(ck=>{
-    const card=C[ck];
-    h+=`<div class="card-hdr" style="background:${card.color}">
-      <span class="card-hdr-name">${card.name}</span>
-      <span class="card-hdr-info">${card.fee>0?'renews '+MO[card.rmo]+' · $'+card.fee:'no fee'}</span>
-    </div>`;
+// CREDITS
+function rCr(){
+  const cks=[...new Set(CR.map(c=>c.card))];
+  let h=`<div class="hint">Tap months to mark used. Months ordered by renewal cycle.</div>`;
+  cks.forEach(ck=>{
+    const card=C[ck],rm=card.rm;
+    h+=`<div class="chdr" style="background:${card.co}"><span class="chdr-n">${card.n}</span>
+      <span class="chdr-i">${card.fee>0?'renews '+MO[card.rm]+' · $'+card.fee:'no fee'}</span></div>`;
     CR.filter(c=>c.card===ck).forEach(cr=>{
-      h+=`<div class="card" style="margin-bottom:4px"><div class="cr-name">${cr.name}</div><div class="cr-info">$${cr.amt}/yr · ${cr.reset}</div>`;
-      if(cr.per==="monthly"){
-        h+=`<div class="mgrid">${MO.map((m,mi)=>{
-          const k=cr.id+"_"+mi, u=U[k], p=mi<CM, cu=mi===CM;
-          let cls="mbtn";
-          if(u)cls+=" used"; else if(cu)cls+=" cur"; else if(p)cls+=" miss";
-          return`<button class="${cls}" onclick="event.stopPropagation();tog('${k}')">${m}</button>`;
+      h+=`<div class="cd" style="margin-bottom:4px"><div class="crn">${cr.name}</div><div class="cri">$${cr.amt}/yr · ${cr.reset}</div>`;
+      if(cr.per==="m"){
+        const cycle=cycleMonths(rm);
+        h+=`<div class="mgrid">${cycle.map(mi=>{
+          const k=cr.id+"_"+mi,u=U[k],p=monthPast(mi,rm),cu=mi===CM;
+          let cls="mb";
+          if(u)cls+=" used";else if(cu)cls+=" cur";else if(p)cls+=" miss";
+          return`<button class="${cls}" onclick="event.stopPropagation();tog('${k}')">${MO[mi]}</button>`;
         }).join("")}</div>`;
-      }else if(cr.per==="semi"){
-        const u=U[cr.id];
-        h+=`<button class="${u?'abtn used':'abtn'}" onclick="event.stopPropagation();tog('${cr.id}')">${u?'✓ Used':'Mark as Used'}</button>`;
       }else{
         const u=U[cr.id];
-        h+=`<button class="${u?'abtn used':'abtn'}" onclick="event.stopPropagation();tog('${cr.id}')">${u?'✓ Used':'Mark as Used'}</button>`;
+        h+=`<button class="${u?'ab used':'ab'}" onclick="event.stopPropagation();tog('${cr.id}')">${u?'✓ Used':'Mark as Used'}</button>`;
       }
-      h+=`<div class="cr-notes">${cr.notes}</div></div>`;
+      h+=`<div class="crnt">${cr.notes}</div></div>`;
     });
   });
-  h+=`<button class="reset" onclick="if(confirm('Clear all tracking data?')){U={};save();render()}">Reset All Tracking Data</button>`;
   return h;
 }
 
-function rBen(){
-  return BEN.map(b=>`<div>
-    <div class="ben-hdr" style="background:${C[b.card].color}">${C[b.card].name}<span>$${C[b.card].fee}/yr</span></div>
-    <div class="ben-list">${b.items.map(i=>`<div class="ben-item">${i}</div>`).join("")}</div>
-  </div>`).join("");
+// BENEFITS
+function rBn(){
+  let h="";
+  BEN.forEach(b=>{
+    h+=`<div><div class="bhdr" style="background:${C[b.card].co}">${C[b.card].n}<span>$${C[b.card].fee}/yr</span></div><div class="blst">`;
+    b.items.forEach((item,i)=>{
+      const bk=`${b.card}_${i}`;
+      const desc=item.k?BD.find(d=>d.n===item.k):null;
+      const isOpen=bexp[bk];
+      h+=`<div class="bi" ${desc?`onclick="tBen('${bk}')"`:''}><div class="bi-top"><span class="bi-name">${item.t}</span>`;
+      if(desc)h+=`<span class="bi-chev${isOpen?' open':''}">▾</span>`;
+      h+=`</div>`;
+      if(desc&&isOpen)h+=`<div class="bi-desc">${desc.d}</div>`;
+      h+=`</div>`;
+    });
+    h+=`</div></div>`;
+  });
+  return h;
+}
+function tBen(k){bexp[k]=!bexp[k];render()}
+
+// PURCHASES
+function rPu(){
+  let h=`<div class="hint">Best card by earning + protections.</div>`;
+  PUR.forEach(p=>{
+    h+=`<div class="cd"><div class="ptop"><span class="badge" style="background:${C[p.best].co}">${C[p.best].s}</span><span class="psc">${p.sc}</span></div><div class="pw">${p.why}</div></div>`;
+  });
+  return h;
 }
 
-function rPur(){
-  return`<div class="hint">Best card by earning rate + protections.</div>`+PUR.map(p=>`<div class="card">
-    <div class="pur-top"><span class="badge" style="background:${C[p.best].color}">${C[p.best].short}</span><span class="pur-sc">${p.sc}</span></div>
-    <div class="pur-why">${p.why}</div>
-  </div>`).join("");
+// Export/Import
+function doExport(){
+  const d=JSON.stringify(U);
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(d).then(()=>alert("Copied to clipboard! Save this text somewhere safe.")).catch(()=>showModal(d));
+  }else{showModal(d)}
 }
+function showModal(d){
+  document.getElementById("modal").innerHTML=`<div class="modal-bg" onclick="closeModal()"><div class="modal" onclick="event.stopPropagation()">
+    <h3>Export Data</h3><p style="font-size:12px;color:var(--mt);margin-bottom:8px">Copy this text and save it somewhere safe:</p>
+    <textarea id="mdata" readonly>${d}</textarea>
+    <div class="modal-btns"><button class="mbtn-cancel" onclick="closeModal()">Close</button><button class="mbtn-ok" onclick="document.getElementById('mdata').select();document.execCommand('copy');alert('Copied!')">Copy</button></div>
+  </div></div>`;
+}
+function doImport(){
+  document.getElementById("modal").innerHTML=`<div class="modal-bg" onclick="closeModal()"><div class="modal" onclick="event.stopPropagation()">
+    <h3>Import Data</h3><p style="font-size:12px;color:var(--mt);margin-bottom:8px">Paste your exported data below:</p>
+    <textarea id="idata" placeholder='Paste exported JSON here...'></textarea>
+    <div class="modal-btns"><button class="mbtn-cancel" onclick="closeModal()">Cancel</button><button class="mbtn-ok" onclick="runImport()">Import</button></div>
+  </div></div>`;
+}
+function runImport(){
+  try{const d=JSON.parse(document.getElementById("idata").value);U=d;save();closeModal();render();alert("Imported successfully!")}
+  catch(e){alert("Invalid data. Make sure you pasted the full export text.")}
+}
+function closeModal(){document.getElementById("modal").innerHTML=""}
+function doReset(){if(confirm("Clear all tracking data? This cannot be undone.")){U={};save();render()}}
 
-renderTabs();render();
+rTabs();render();
 </script>
 </body>
 </html>
